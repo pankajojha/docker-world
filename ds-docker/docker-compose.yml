@@ -1,0 +1,40 @@
+# Our PostgreSQL service:
+postgres:
+  image: postgres:latest
+  ports:
+    - "5432:5432" # Bind host port 5432 to PostgreSQL port 5432
+  volumes:
+     - ./var/data/postgres:/var/data/postgresql
+     - ./var/lib/postgres:/var/lib/postgresql
+  environment:
+    LC_ALL: C.UTF-8
+    POSTGRES_PASSWORD: root
+
+# Our Redis service:
+redis:
+  image: redis:3.0.4
+  ports:
+    - "6379:6379" # Bind host port 6379 to Redis port 6379
+
+
+try_mysql:
+  image: mysql
+  environment:
+     - MYSQL_ROOT_PASSWORD=root
+     - MYSQL_USER=root
+     - MYSQL_PASSWORD=root
+     - MYSQL_DATABASE=epenops
+  volumes:
+    - ./var/data/mysql:/var/lib/mysql
+  ports:
+     - "3309:3306"
+
+
+
+#db:
+#  image: mongo:3.0
+#  command: mongod --smallfiles --quiet --logpath=/dev/null
+#  volumes:
+#     - /var/data/mongo:/data/db
+#  ports:
+#    - "27017:27017"
