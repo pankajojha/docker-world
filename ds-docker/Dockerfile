@@ -19,5 +19,7 @@ RUN tar -zxvf /install/dbmaintain.tar.gz
 
 ADD ./config .
 
+
+
 RUN chown mysql /var/run/mysqld
 EXPOSE 3306
