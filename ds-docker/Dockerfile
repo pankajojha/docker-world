@@ -17,9 +17,7 @@ ADD https://github.com/DbMaintain/dbmaintain/releases/download/v2.6.0/dbmaintain
 RUN apt-get update -y --fix-missing && apt-get install -y alien debhelper build-essential openjdk-7-jre tar
 RUN tar -zxvf /install/dbmaintain.tar.gz
 
-ADD ./config .
-
-
+#ADD ./config .
 
 RUN chown mysql /var/run/mysqld
 EXPOSE 3306

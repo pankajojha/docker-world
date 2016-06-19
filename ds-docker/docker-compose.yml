@@ -18,7 +18,8 @@ redis:
 
 
 try_mysql:
-  image: mysql
+  image: my-mysql 
+ # build . 
   environment:
      - MYSQL_ROOT_PASSWORD=root
      - MYSQL_USER=root
@@ -27,7 +28,7 @@ try_mysql:
   volumes:
     - ./var/data/mysql:/var/lib/mysql
   ports:
-     - "3309:3306"
+     - "3306:3306"
 
 
 
