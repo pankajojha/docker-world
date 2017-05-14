@@ -1,41 +1,73 @@
+version: '2'
 # Our PostgreSQL service:
-postgres:
-  image: postgres:latest
-  ports:
-    - "5432:5432" # Bind host port 5432 to PostgreSQL port 5432
-  volumes:
-     - ./var/data/postgres:/var/data/postgresql
-     - ./var/lib/postgres:/var/lib/postgresql
-  environment:
-    LC_ALL: C.UTF-8
-    POSTGRES_PASSWORD: root
+services:
+    postgres:
+      image: postgres:latest
+      ports:
+        - "5432:5432" # Bind host port 5432 to PostgreSQL port 5432
+      volumes:
+        - ./var/data/postgres:/var/data/postgresql
+        - ./var/lib/postgres:/var/lib/postgresql
+      environment:
+        LC_ALL: C.UTF-8
+        POSTGRES_PASSWORD: root
 
-# Our Redis service:
-redis:
-  image: redis:3.0.4
-  ports:
-    - "6379:6379" # Bind host port 6379 to Redis port 6379
-
-
-try_mysql:
-  image: my-mysql 
- # build . 
-  environment:
-     - MYSQL_ROOT_PASSWORD=root
-     - MYSQL_USER=root
-     - MYSQL_PASSWORD=root
-     - MYSQL_DATABASE=epenops
-  volumes:
-    - ./var/data/mysql:/var/lib/mysql
-  ports:
-     - "3306:3306"
+    # Our Redis service:
+    redis:
+      image: redis:3.0.4
+      ports:
+        - "6379:6379" # Bind host port 6379 to Redis port 6379
 
 
+    mysql-master:
+      image: my-mysql 
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=root
+        - MYSQL_DATABASE=epenops
+      volumes:
+        - ./var/data/mysql:/var/lib/mysql
+        #- 'mysql_master_data:/bitnami/mysql'
+      ports:
+        - "3306:3306"
 
-#db:
-#  image: mongo:3.0
-#  command: mongod --smallfiles --quiet --logpath=/dev/null
-#  volumes:
-#     - /var/data/mongo:/data/db
-#  ports:
-#    - "27017:27017"
+    mysql-slave:
+        image: my-mysql 
+        ports:
+          - "3307:3306"
+        depends_on:
+          - mysql-master
+        environment:
+          - MYSQL_REPLICATION_MODE=slave
+          - MYSQL_REPLICATION_USER=repl_user
+          - MYSQL_USER=root
+          - MYSQL_DATABASE=root
+          - MYSQL_MASTER_HOST=epenops
+          - MYSQL_MASTER_PORT=3306
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_PASSWORD=root
+          # ALLOW_EMPTY_PASSWORD is recommended only for development.
+          #- ALLOW_EMPTY_PASSWORD=yes
+          
+    mongo:
+      image: mongo
+      command: mongod --smallfiles --quiet --logpath=/dev/null
+      volumes:
+        - mongo-data:/data/db
+      ports:
+        - "27017:27017"
+
+volumes:
+     mysql_master_data:
+          driver: local
+     mongo-data:
+           driver: local
+
+# docker build -t eds-mysql .
+# docker pull mysql:5.6.22
+# docker run --name=eds-mysql -d -v ~/var/data/mysql:var/lib/mysql -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=root123" eds-mysql
+#ln -s ~/var/data/mysql /mnt/volume-sfo2-01/data/mysql
+
+# docker pull mysql:5.6.22
+# docker run --name=eds-mysql -d -v ~/var/data/mysql:var/lib/mysql -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=root123" mysql
