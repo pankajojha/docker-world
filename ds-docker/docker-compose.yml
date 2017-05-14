@@ -1,5 +1,10 @@
 version: '2'
-# Our PostgreSQL service:
+
+
+networks:
+  app-tier:
+    driver: bridge
+
 services:
     postgres:
       image: postgres:latest
@@ -22,8 +27,11 @@ services:
     mysql-master:
       image: my-mysql 
       environment:
+        - MYSQL_REPLICATION_MODE=master
+        - MYSQL_REPLICATION_USER=repl_user
+        - MYSQL_REPLICATION_PASSWORD=repl_password
         - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_USER=root
+        - MYSQL_USER=dba_admin
         - MYSQL_PASSWORD=root
         - MYSQL_DATABASE=ops
       volumes:
@@ -41,14 +49,16 @@ services:
         environment:
           - MYSQL_REPLICATION_MODE=slave
           - MYSQL_REPLICATION_USER=repl_user
-          - MYSQL_USER=root
+          - MYSQL_REPLICATION_PASSWORD=repl_password
+          - MYSQL_ROOT_PASSWORD=root
           - MYSQL_DATABASE=ops
           - MYSQL_MASTER_HOST=mysql-master
-          - MYSQL_MASTER_PORT=3306
-          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_MASTER_PORT=3306        
+          - MYSQL_USER=dba_admin
           - MYSQL_PASSWORD=root
           # ALLOW_EMPTY_PASSWORD is recommended only for development.
           #- ALLOW_EMPTY_PASSWORD=yes
+          #docker-compose scale mysql-master=1 mysql-slave=3
           
     mongo:
       image: mongo
