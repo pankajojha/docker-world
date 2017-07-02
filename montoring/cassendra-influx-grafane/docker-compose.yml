@@ -19,6 +19,9 @@ services:
       ports:
         - "8083:8083"
         - "8086:8086"
+      volumes:
+        - ./var/lib/influxdb/data:/var/lib/influxdb/data
+        - ./etc/influxdb:/etc/influxdb
     grafana:
       image: grafana/grafana:4.3.2
       container_name: grafana
