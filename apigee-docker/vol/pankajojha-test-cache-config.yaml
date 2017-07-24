@@ -1,0 +1,55 @@
+edgemicro:
+  port: 8000
+  max_connections: 1000
+  max_connections_hard: 5000
+  max_times: 300
+  config_change_poll_interval: 600
+  logging:
+    level: error
+    dir: /var/tmp
+    stats_log_interval: 60
+    rotate_interval: 24
+  plugins:
+    sequence:
+      - oauth
+headers:
+  x-forwarded-for: true
+  x-forwarded-host: true
+  x-request-id: true
+  x-response-time: true
+  via: true
+oauth:
+  allowNoAuthorization: false
+  allowInvalidAuthorization: false
+  verify_api_key_url: 'https://pankajojha-test.apigee.net/edgemicro-auth/verifyApiKey'
+  public_key: |-
+    -----BEGIN CERTIFICATE-----
+    MIICpDCCAYwCCQDPSz5/SHGPGTANBgkqhkiG9w0BAQsFADAUMRIwEAYDVQQDEwls
+    b2NhbGhvc3QwHhcNMTcwNzI0MDMwMzIzWhcNMTcwNzI1MDMwMzIzWjAUMRIwEAYD
+    VQQDEwlsb2NhbGhvc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDE
+    i1CyKUsFjZ+WM/veF+vEdgTlJ91MWvloo6yehUWEi1vZLXYzcbhUdzgLMt5asMRJ
+    xrRgmf22PIZAkY95ZKCGbsft0k6U/vYRqDXswni6EDzhxCWZ3mtyU6HT9/Vl+2Iw
+    VgrNfFYjBMgXreaSlT4nU0NjKnSy990xa5A+Ta2gQZJR8X67ir3sQZfUmiZL3bEY
+    st3I4GiM6MEjIwINjPJg3wwo2TCvYM2W5wJD3cznvAD2ptJmAVIBJRE0oX00DyjQ
+    wKjAl9gIJM2IkzfJ9Xq5sNB29ZcmUm5e7Ppj8+WpaIKTvG6PfWsSejavp/LCD5tv
+    VkchXfF0LlRC4+dUWfJ1AgMBAAEwDQYJKoZIhvcNAQELBQADggEBALiTc1+HKcSz
+    9YGf9zkiCUq8YVPBTNyPK5/5s7WYnNf2xoEPzi9LDpv/Wj68SCXnYIEZqwJ8TVbc
+    VuI+oHmzSgfoApxC+LBNCkFTt/Ujlj/wkuArvflkHXHrZCd1SbFoXEW27gjgVWov
+    1NRHIDM1kqo5dH1hSBvsbQEMlWSSG5/UCC0fMqN8AwUPvnIEEPQPGDgAbAoYXAr1
+    zmF9L1t3TfSD4MvhlWo6ZR2Jo5dSMlrNGomuT5SoE9OjVICaU26BB31+MhX58tlj
+    i2yI6gxleIcxlSER3gi8Ek2kVNro2Xeijl9xPX451k75iv8xoc5V3jS198Bn47nw
+    FUI2IJneMIg=
+    -----END CERTIFICATE-----
+  product_to_proxy: &ref_0 {}
+analytics:
+  uri: 'https://edgemicroservices.apigee.net/edgemicro/axpublisher/organization/pankajojha/environment/test'
+  source: microgateway
+  proxy: dummy
+  proxy_revision: 1
+  compress: false
+  flushInterval: 250
+  key: 13cdf70523af2d4a4728d940df8be563e9cd4f9572f1d28735bb45d66533a47a
+  secret: 1502015e12356658d1d73880ddcc2d06247a08b4b4d939709427ae0d34aa1653
+proxies: []
+product_to_proxy: *ref_0
+quota: {}

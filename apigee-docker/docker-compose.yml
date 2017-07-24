@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  apigee_local:
+    image: ndietz/emgw 
+    container_name: apigee
+    env_file:
+      - pankajojha-test-env.list
+    ports:
+     - "8000:8000"
+    volumes:
+      - ./vol/:/root/.edgemicro 
+
+# npm install edgemicro@2.3.1 -g  # edgemicro init   
+# edgemicro configure -o pankajojha -e test -u pankajojha@hotmail.com
+# docker run --env-file ./<org>-<env>-env.list  -p 8000:8000 -v <directory containing configuration>:/root/.edgemicro -d -t ndietz/emgw
