@@ -1,0 +1,19 @@
+version: '3'
+services:
+  solr:
+    image: solr
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/opt/solr/server/solr/core2
+      #- ./solrhome:/opt/solrhome
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - solr_data
+volumes:
+  solr_data:
+    external: true
+
+
+#docker volume create --name=data
