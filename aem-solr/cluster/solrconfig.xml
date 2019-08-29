@@ -1,0 +1,7 @@
+<requestHandler name="/myhandler" class="org.apache.solr.core.myHandler" runtimeLib="true" version="1">
+</requestHandler>
+
+curl http://localhost:8981/solr/techproducts/config -H 'Content-type:application/json' -d '{
+"add-updateprocessor" : { "name" : "firstFld",
+                          "class": "solr.FirstFieldValueUpdateProcessorFactory",
+                          "fieldName":"test_s"}}'

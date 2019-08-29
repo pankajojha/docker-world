@@ -1,0 +1,99 @@
+<!-- A custom request handler for Carnival Corp that handles cruise search requests -->
+  <requestHandler name="/cruisesearch" class="solr.SearchHandler">
+    <lst name="defaults">
+        <str name="echoParams">explicit</str>
+        <str name="q">type:cruise</str>
+        <str name="fq">soldOut:false</str>
+        <str name="sort">departDate asc</str>
+        <str name="facet">true</str>
+        <str name="facet.limit">-1</str>       
+        <str name="rows">4</str>
+        <str name="group">true</str>
+        <str name="group.ngroups">true</str>
+        <str name="group.field">itineraryId</str>
+        <str name="group.sort">departDate asc</str>
+        <str name="json.facet">{departure:{type:terms,field:embarkPortName,sort:{index:asc},limit:-1,domain:{excludeTags:embarkTag},mincount:0},"1-5":{type:query,q:"duration:[1 TO 5]",domain:{excludeTags:durationTag}},"6-8":{type:query,q:"duration:[6 TO 8]",domain:{excludeTags:durationTag}},"9-16":{type:query,q:"duration:[9 TO 16]",domain:{excludeTags:durationTag}},"17-50":{type:query,q:"duration:[17 TO *]",domain:{excludeTags:durationTag}},departDate:{type:range,field:departDate,start:"NOW/YEAR",end:"NOW/YEAR+3YEAR",gap:"+1MONTH",domain:{excludeTags:departTag}},regions:{type:terms,field:regionNames,sort:{index:asc},limit:-1,domain:{excludeTags:regionTag},mincount:0},cruiseType:{type:terms,field:cruiseType,sort:{index:asc},domain:{excludeTags:cruisetypeTag},mincount:0},portOfCalls:{type:terms,field:portOfCallIds,sort:{index:asc},limit:-1,domain:{excludeTags:portsTag},mincount:0},destinations:{type:terms,field:destinationNames,sort:{index:asc},limit:-1,domain:{excludeTags:destinationTag},mincount:0},ships:{type:terms,field:shipName,sort:{index:asc},mincount:0,limit:-1,domain:{excludeTags:shipsTag},facet:{brands:{field:shipId}}},offers:{type:terms,field:promoData,sort:{index:asc},limit:-1,domain:{excludeTags:offerTag},mincount:0},soldOut:{type:terms,field:soldOut,sort:{index:desc},domain:{excludeTags:soldOutTag},mincount:0}}
+        </str>
+        <str name="wt">xslt</str>
+        <str name="tr">searchtransformer.xsl</str>
+        <str name="indent">true</str>
+    </lst>
+  </requestHandler>
+   
+  <!-- A custom request handler for Carnival Corp that handles cruise search requests -->
+  <requestHandler name="/inlinesearch" class="solr.SearchHandler">
+    <lst name="defaults">
+        <str name="echoParams">explicit</str>
+        <str name="q">type:cruise</str>
+        <str name="sort">departDate asc</str>
+        <str name="rows">4</str>
+        <str name="group">true</str>
+        <str name="group.ngroups">true</str>
+        <str name="group.field">itineraryId</str>
+        <str name="json.facet">{departure:{type:terms,field:embarkPortName,sort:{index:asc},limit:-1,domain:{excludeTags:embarkTag},mincount:0},"0-5":{type:query,q:"duration:[0 TO 5]",domain:{excludeTags:durationTag}},"6-8":{type:query,q:"duration:[6 TO 8]",domain:{excludeTags:durationTag}},"9-16":{type:query,q:"duration:[9 TO 16]",domain:{excludeTags:durationTag}},"17-50":{type:query,q:"duration:[17 TO *]",domain:{excludeTags:durationTag}},departDate:{type:range,field:departDate,start:"NOW/YEAR",end:"NOW/YEAR+3YEAR",gap:"+1MONTH",domain:{excludeTags:departTag}},regions:{type:terms,field:regions,sort:{index:asc},limit:-1,domain:{excludeTags:regionTag},mincount:0},cruiseType:{type:terms,field:cruiseType,sort:{index:asc},domain:{excludeTags:cruisetypeTag},mincount:0},portOfCalls:{type:terms,field:portOfCallIds,sort:{index:asc},limit:-1,domain:{excludeTags:portsTag},mincount:0},destinations:{type:terms,field:destinationNames,sort:{index:asc},limit:-1,domain:{excludeTags:destinationTag},mincount:0},ships:{type:terms,field:shipName,sort:{index:asc},mincount:0,limit:-1,domain:{excludeTags:shipsTag},facet:{brands:{field:shipId}}},offers:{type:terms,field:promoData,sort:{index:asc},limit:-1,domain:{excludeTags:offerTag},mincount:0},soldOut:{type:terms,field:soldOut,sort:{index:desc},domain:{excludeTags:soldOutTag},mincount:0}}
+        </str>
+        <str name="wt">xslt</str>
+        <str name="tr">inlinesearchtransformer.xsl</str>
+        <str name="indent">true</str>
+    </lst>   
+  </requestHandler>
+ 
+  <!-- A custom request handler for Carnival Corp that Handles Recently viewed requests -->
+  <requestHandler name="/recentlyviewed" class="solr.SearchHandler">
+    <lst name="defaults">    
+        <str name="q">type:cruise</str>
+        <str name="rows">6</str>       
+        <str name="wt">xslt</str>
+        <str name="tr">recentlyviewedtransformer.xsl</str>
+        <str name="indent">true</str>
+    </lst>   
+  </requestHandler>
+ 
+  <!-- A custom request handler for Carnival Corp that handles Favorites requests -->
+  <requestHandler name="/favorites" class="solr.SearchHandler">
+    <lst name="defaults">    
+        <str name="q">type:cruise</str>
+        <str name="wt">xslt</str>
+        <str name="tr">favoritestransformer.xsl</str>
+        <str name="indent">true</str>
+    </lst>   
+  </requestHandler>
+ 
+  <!-- A custom request handler for Carnival Corp that handles All Ports requests -->
+  <requestHandler name="/ports" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="q">type:portDetails</str>    
+      <str name="sort">name asc</str>
+      <str name="wt">xslt</str>
+      <int name="rows">12</int>
+      <str name="tr">portstransformer.xsl</str>
+      <str name="indent">true</str>
+    </lst>
+  </requestHandler>
+   
+  <!-- A custom request handler for Carnival Corp that handles Shore Excursions requests -->
+  <requestHandler name="/excursions" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="q">type:excursion</str>    
+      <str name="sort">name asc</str>
+      <str name="wt">xslt</str>
+        <str name="tr">shoretransformer.xsl</str>
+      <int name="rows">12</int>
+      <str name="indent">true</str>
+      <str name="json.facet">{duration:{type:terms,field:excursionDuration,sort:{index:asc},domain:{excludeTags:durationTag},facet:{name:{type:terms,field:excursionDurationName}}},featured:{type:terms,field:featured,sort:{index:asc},domain:{excludeTags:featuredTag}},activity:{type:terms,field:activityLevel,sort:{index:asc},domain:{excludeTags:activityTag}},ports:{type:terms,field:portName,sort:{index:asc},limit:-1,domain:{excludeTags:portTag}},collectionTypes:{type:terms,field:collectionTypeName,sort:{index:asc},limit:-1,domain:{excludeTags:collectionTypeTag}},excursionDestinations:{type:terms,field:excursionDestinationNames,sort:{index:asc},limit:-1,domain:{excludeTags:excursionDestinationTag}}}</str>
+    </lst>
+  </requestHandler>
+   
+  <!-- A custom request handler for Carnival Corp that handles Onboard Activities (Ship Activities) requests -->
+  <requestHandler name="/activities" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="q">type:onBoardActivities</str>
+      <str name="sort">name asc</str>    
+      <int name="rows">12</int>
+      <str name="wt">xslt</str>
+      <str name="tr">onboardtransformer.xsl</str>
+      <str name="indent">true</str>
+      <str name="json.facet">{ships:{type:terms,field:shipNames,sort:{index:asc},limit:-1,domain:{excludeTags:shipTag},mincount:0},activityType:{type:terms,field:activityType,sort:{index:asc},domain:{excludeTags:activityTag},mincount:0,facet:{name:{type: terms,field: activityTypeId}}},price:{type:terms,field:included,sort:{index:asc},domain:{excludeTags:priceTag},mincount:0}}
+      </str>
+    </lst>   
+  </requestHandler>

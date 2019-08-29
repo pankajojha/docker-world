@@ -1,0 +1,76 @@
+version: '3.7'
+services:
+  solr1:
+    image: solr:7
+    container_name: solr1
+    ports:
+     - "9983:9983"
+     - "8983:8983"
+    networks:
+      - solr 
+    depends_on:
+      - zoo1 
+    environment:
+      - SOLR_HEAP=800m
+      # - SOLR_PID_DIR=/var/solr
+      # - SOLR_HOME=/var/solr/data
+    volumes:
+      #- solr_opt_data:/opt/solr
+      - "./data/solr:/var/solr"
+      #- "./data/opt/solr/server:/opt/solr/server"
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr
+      - start
+      - -c
+      - -f
+  # command:
+      #- custom.sh      
+
+  # solr1:
+  #   image: solr:7
+  #   container_name: solr1    
+  #   ports:
+  #    - "8983:8983"
+  #   volumes:
+  #     - solr_data:/var/solr
+  #     #- ./data/solr:/var/solr
+  #   command:
+  #     - solr-precreate
+  #     - hal_en_US
+  #   networks:
+  #     - solr
+  #   depends_on:
+  #     - zoo1 
+  #   environment:
+  #     - SOLR_HEAP=800m
+  #     #- SOLR_PID_DIR=/var/solr
+  #     #- SOLR_HOME=/var/solr/data
+  #   entrypoint:  
+  #     - docker-entrypoint.sh
+      
+  zoo1:
+      image: zookeeper:3.4
+      container_name: zoo1
+      restart: always
+      hostname: zoo1
+      ports:
+        - 2181:2181
+      environment:
+        ZOO_MY_ID: 1
+        ZOO_SERVERS: server.1=zoo1:2888:3888
+      networks:
+        - solr
+
+networks:
+  solr:
+
+volumes:
+  hal_en_US:
+    external: true
+  solr_data:
+    external: true
+
+
+
+#docker volume create --name=data

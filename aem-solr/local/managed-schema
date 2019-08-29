@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+ 
+<!-- 
+ This is the Solr schema file. This file should be named "schema.xml" and
+ should be in the conf directory under the solr home
+ (i.e. ./solr/conf/schema.xml by default)
+ or located where the classloader for the Solr webapp can find it.
+ 
+ This example schema is the recommended starting point for users.
+ It should be kept correct and concise, usable out-of-the-box.
+ 
+ For more information, on how to customize this file, please see
+ http://wiki.apache.org/solr/SchemaXml
+ 
+ PERFORMANCE NOTE: this schema includes many optional features and should not
+ be used for benchmarking.  To improve performance one could
+  - set stored="false" for all fields possible (esp large fields) when you
+    only need to search on the field but don't need to return the original
+    value.
+  - set indexed="false" if you don't need to search on the field, but only
+    return the field as a result of searching on other indexed fields.
+  - remove all unneeded copyField statements
+  - for best index size and searching performance, set "index" to false
+    for all general text fields, use copyField to copy them to the
+    catchall "text" field, and use that for searching.
+  - For maximum indexing performance, use the ConcurrentUpdateSolrServer
+    java client.
+  - Remember to run the JVM in server mode, and use a higher logging level
+    that avoids logging every request
+-->
+ 
+<schema name="example-data-driven-schema" version="1.6">
+     
+    <field name="id" type="string" multiValued="false" indexed="true" required="false" stored="true"/>
+     
+    <!-- Custom schema fields added for Carnival Corp Cruise Search functionalities -->
+    <field name="arrivalDate" type="date" indexed="false" stored="true"/>
+    <field name="cruiseId" type="string" indexed="true" stored="true"/>
+    <field name="tourId" type="string" indexed="false" stored="true"/>
+    <field name="cruiseType" type="string" indexed="true" stored="true"/>
+    <field name="departDate" type="date" indexed="true" stored="true"/>
+    <field name="description" type="string" indexed="false" stored="true"/>
+    <field name="disembarkPortCode" type="string" indexed="false" stored="true"/>
+    <field name="disembarkPortName" type="string" indexed="false" stored="true"/>
+    <field name="duration" type="long" indexed="true" stored="true"/>
+    <field name="embarkPortCode" type="string" indexed="true" stored="true"/>
+    <field name="embarkPortName" type="string" indexed="false" stored="true"/>
+    <field name="entityId" type="string" indexed="true" required="true" stored="true"/>
+    <field name="itineraryId" type="string" indexed="true" stored="true"/>
+    <field name="itineraryName" type="string" indexed="false" stored="true"/>
+    <field name="cruiseOverviewImage" type="string" indexed="false" stored="true"/>  
+    <field name="cruiseOverviewImageAlt" type="string" indexed="false" stored="true"/>
+    <field name="itineraryDoubleImage" type="string" indexed="false" stored="true"/>
+    <field name="itineraryDoubleImageTablet" type="string" indexed="false" stored="true"/>
+    <field name="itineraryDoubleImageMobile" type="string" indexed="false" stored="true"/>
+    <field name="itineraryDoubleImageAlt" type="string" indexed="false" stored="true"/>
+    <field name="itineraryURL" type="string" indexed="false" stored="true"/>
+    <field name="contentPath" type="string" indexed="false" stored="true"/>
+    <field name="name" type="string" indexed="true" stored="true"/>
+    <field name="nightName" type="string" indexed="false" stored="true"/>
+    <field name="promoData" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="promoIds" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="portImages" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="destinationIds" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="destinationNames" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="portOfCallIds" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="portsOfCall" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="excursionIds" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="regions" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="regionNames" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="shipId" type="string" indexed="true" stored="true"/>
+    <field name="shipName" type="string" indexed="false" stored="true"/>
+    <field name="shipVersion" type="string" indexed="false" stored="true"/>
+    <field name="soldOut" type="boolean" indexed="true" stored="true"/>
+    <field name="type" type="string" indexed="true" stored="true"/>
+    <field name="fareType" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="countryNames" type="string" indexed="false" stored="true"/>
+     
+    <!--deal related info -->
+    <field name="dealCodes" type="string" multiValued="true" indexed="true" stored="true"/>
+     
+    <!-- Custom schema fields for Costa specific Cruise Search functionalities. -->
+    <field name="excursionPackage" type="boolean" indexed="false" stored="true"/>
+    <field name="availabilityStatus" type="string" indexed="false" stored="true"/>
+    <field name="adultAmount" type="string" indexed="true" stored="true"/>
+    <field name="childAmount" type="string" indexed="true" stored="true"/>
+    <field name="infantAmount" type="string" indexed="true" stored="true"/>
+    <field name="portCurrencyCode" type="string" indexed="false" stored="true"/>
+    <field name="serviceCharges" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="documentName" type="string" multiValued="true" indexed="false" stored="true"/>
+    <field name="documentDescription" type="string" multiValued="true" indexed="false" stored="true"/>
+     
+    <!-- Custom dynamic schema fields for Carnival Corp Cruise Search functionalities. -->
+    <dynamicField name="taxExpenses_*" type="long" indexed="false" stored="true"/>
+    <dynamicField name="roomTypeId_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="roomTypeName_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="roomCategoryId_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="offerNames_*" type="string" multiValued="true" indexed="false" stored="true"/>
+    <dynamicField name="offerIds_*" type="string" multiValued="true" indexed="false" stored="true"/>
+    <dynamicField name="campaignId_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="price_*" type="long" indexed="true" stored="true"/>
+    <dynamicField name="basePrice_*" type="long" indexed="false" stored="true"/>
+    <dynamicField name="baseTaxExpenses_*" type="long" indexed="false" stored="true"/>
+    <dynamicField name="flightPackage_*" type="boolean" indexed="false" stored="true"/>
+    <dynamicField name="airportName_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="classification_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="fare_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="packageType_*" type="string" indexed="true" stored="true"/>
+    <dynamicField name="taxesAndFeesCombined_*" type="boolean" indexed="false" stored="true"/>
+     
+    <!--deal related price, tax and room info -->
+    <dynamicField name="dealCountries_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="csvItineraryId_*" type="string" multiValued="true" indexed="false" stored="true"/>
+    <dynamicField name="dealRegionIds_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="dealDestinationIds_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="dealRegionNames_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="dealDestinationNames_*" type="string" multiValued="true" indexed="true" stored="true"/>
+    <dynamicField name="dealPrice_*" type="long" indexed="true" stored="true"/>
+    <dynamicField name="dealTaxExpenses_*" type="long" indexed="false" stored="true"/>
+    <dynamicField name="dealClassification_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="dealRoomTypeName_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="dealRoomTypeId_*" type="string" indexed="false" stored="true"/>
+    <dynamicField name="dealRoomCategoryId_*" type="string" indexed="false" stored="true"/>
+     
+     
+    <!-- Custom schema fields for Carnival Corp Port functionalities. -->
+    <field name="destinationID" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="overviewImage" type="string" indexed="false" stored="true"/>
+    <field name="overviewImageAlt" type="string" indexed="false" stored="true"/>
+    <field name="externalImageType" type="string" indexed="false" stored="true"/>
+    <field name="portUrl" type="string" indexed="false" stored="true"/>
+    <field name="featured" type="boolean" indexed="true" stored="true"/>
+    <field name="departurePort" type="boolean" indexed="true" stored="true"/>
+ 
+    <!-- Custom schema fields for Carnival Corp Shorex functionalities. -->
+    <field name="currency" type="string" indexed="false" stored="true"/>
+    <field name="excursionDestinationIDs" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="excursionDestinationNames" type="string" multiValued="true" indexed="false" stored="true"/> 
+    <field name="portId" type="string" indexed="true" stored="true"/>
+    <field name="excursionDuration" type="string" indexed="true" stored="true"/>
+    <field name="excursionDurationName" type="string" indexed="false" stored="true"/>
+    <field name="portName" type="string" indexed="false" stored="true"/>
+    <field name="activityLevel" type="string" indexed="true" stored="true"/>
+    <field name="priceLevel" type="string" indexed="true" stored="true"/>
+    <field name="externalContent" type="boolean" indexed="false" stored="true"/>
+    <field name="collectionTypeId" type="string" indexed="true" stored="true"/>
+    <field name="collectionTypeName" type="string" indexed="false" stored="true"/>
+ 
+    <!-- Custom schema fields for Carnival Corp Onboard Activities functionalities. -->
+    <field name="included" type="boolean" indexed="true" stored="true"/>
+    <field name="seeDetailsLink" type="string" indexed="false" stored="true"/>
+    <field name="activityType" type="string" indexed="false" stored="true"/>
+    <field name="activityTypeId" type="string" indexed="true" stored="true"/>
+    <field name="shortDescription" type="string" indexed="false" stored="true"/>
+    <field name="additionalSelector" type="string" indexed="false" stored="true"/>
+    <field name="new" type="boolean" indexed="true" stored="true"/>
+    <field name="shipIds" type="string" multiValued="true" indexed="true" stored="true"/>
+    <field name="shipNames" type="string" multiValued="true" indexed="false" stored="true"/>
+   
+    <!-- doc values are enabled by default for primitive types such as long so we don't index the version field  -->
+    <field name="_version_" type="long" indexed="false" stored="false"/>
+    <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
+    <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
+</schema>
